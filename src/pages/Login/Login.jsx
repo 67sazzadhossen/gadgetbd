@@ -60,13 +60,7 @@ const Login = () => {
       type: "password",
     },
   ];
-  if (loading) {
-    return (
-      <div className="min-h-screen flex justify-center items-center text-3xl">
-        Logging....
-      </div>
-    );
-  }
+
   return (
     <div className="min-h-[80vh] flex justify-center items-center container mx-auto">
       <div className="w-1/2 hidden text-center lg:block">
@@ -117,7 +111,11 @@ const Login = () => {
             <Link>Forgot Password?</Link>
           </div>
           <button type="submit" className="btn w-full">
-            Login
+            {loading ? (
+              <span className="loading loading-dots loading-md"></span>
+            ) : (
+              "Login"
+            )}
           </button>
         </form>
         <div className="lg:w-2/3 mx-auto mt-2">

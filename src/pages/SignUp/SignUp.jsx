@@ -13,7 +13,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 const SignUp = () => {
-  const { SignUp, UpdateProfile, setLoading } = useContext(AuthContext);
+  const { SignUp, UpdateProfile, loading, setLoading } =
+    useContext(AuthContext);
   const imageHostingKey = import.meta.env.VITE_IMAGE_API_KEY;
   const image_hosting_url = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
 
@@ -169,7 +170,11 @@ const SignUp = () => {
               <Link>Forgot Password?</Link>
             </div>
             <button type="submit" className="btn w-full">
-              Sign Up
+              {loading ? (
+                <span className="loading loading-dots loading-md"></span>
+              ) : (
+                "Sign Up"
+              )}
             </button>
           </form>
 
