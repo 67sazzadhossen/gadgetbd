@@ -1,11 +1,22 @@
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { FaFacebook } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import { IoText } from "react-icons/io5";
 import { LuUser2 } from "react-icons/lu";
 import { MdOutlineMail } from "react-icons/md";
 import { PiUsersThreeLight } from "react-icons/pi";
 import { RiKeyLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../Providers/AuthProvider";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const SignUp = () => {
+  const { SignUp, UpdateProfile, setLoading } = useContext(AuthContext);
+  const imageHostingKey = import.meta.env.VITE_IMAGE_API_KEY;
+  const image_hosting_url = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
+
   const {
     register,
     handleSubmit,
@@ -14,13 +25,66 @@ const SignUp = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    const imageFile = { image: data.image[0] };
+    console.log(imageFile);
+    const userData = {
+      name: data.name,
+      email: data.email,
+      role: "buyer",
+      wishList: [],
+      cartList: [],
+    };
+    console.log(userData);
+
+    SignUp(data.email, data.password)
+      .then(async (res) => {
+        if (res.user.accessToken) {
+          const imageHosting = await axios.post(image_hosting_url, imageFile, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+          if (imageHosting.data.success) {
+            const image = imageHosting.data.data.display_url;
+            UpdateProfile(data.name, image)
+              .then(() => {
+                Swal.fire({
+                  position: "center",
+                  icon: "success",
+                  title: "Account Created Successfully",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+                setLoading(false);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+        }
+        console.log(res);
+      })
+      .catch((err) => {
+        Swal.fire({
+          position: "center",
+          icon: "warning",
+          title: "Email has already used",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      });
   };
 
   // Watching password for validation
   const password = watch("password");
 
   const inputs = [
+    {
+      name: "name",
+      placeHolder: "Your name",
+      icon: <IoText size={20} />,
+      type: "text",
+    },
     {
       name: "email",
       placeHolder: "Your email",
@@ -44,7 +108,7 @@ const SignUp = () => {
   return (
     <div>
       <div className="min-h-[80vh] flex justify-center items-center container mx-auto">
-        <div className="w-1/2 hidden lg:block">
+        <div className="w-1/2 hidden text-center lg:block">
           <h1 className="text-3xl font-bold">GadgetBD</h1>
           <p className="text-sm mt-2">
             Sign in to your gadgetBD account to shop the latest gadgets and
@@ -84,6 +148,14 @@ const SignUp = () => {
                 />
               </div>
             ))}
+            {/* <h1 className="uppercase font-bold">Upload Your Photo</h1> */}
+            <input
+              type="file"
+              className="file-input file-input-bordered w-full "
+              {...register("image", {
+                required: `Image is required`,
+              })}
+            />
 
             {/* Display error messages */}
             {Object.keys(errors).map((key) => (
@@ -107,6 +179,19 @@ const SignUp = () => {
               <Link to={"/login"} className="text-blue-400 ml-1">
                 Login
               </Link>
+            </div>
+
+            <div className="divider">OR</div>
+
+            <div className="flex gap-4 justify-center">
+              <button className="flex gap-1 items-center btn ">
+                <FcGoogle />
+                Google
+              </button>
+              <button className="flex gap-1 items-center btn text-blue-600 font-bold">
+                <FaFacebook />
+                Facebook
+              </button>
             </div>
           </div>
         </div>

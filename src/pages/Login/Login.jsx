@@ -1,19 +1,50 @@
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { FaFacebook } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { LuUser2 } from "react-icons/lu";
 import { MdOutlineMail } from "react-icons/md";
 import { PiUsersThreeLight } from "react-icons/pi";
 import { RiKeyLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../Providers/AuthProvider";
+import Swal from "sweetalert2";
 const Login = () => {
+  const { Login, loading, setLoading } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
 
     formState: { errors },
   } = useForm();
-
   const onSubmit = (data) => {
     console.log(data);
+
+    Login(data.email, data.password)
+      .then((res) => {
+        if (res.user) {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Login Successfull",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          Swal.fire({
+            position: "center",
+            icon: "warning",
+            title: "Input valid email and password",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
   };
   const inputs = [
     {
@@ -29,9 +60,16 @@ const Login = () => {
       type: "password",
     },
   ];
+  if (loading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center text-3xl">
+        Logging....
+      </div>
+    );
+  }
   return (
-    <div className="min-h-[80vh] flex justify-center items-center container mx-auto ">
-      <div className="w-1/2 hidden lg:block">
+    <div className="min-h-[80vh] flex justify-center items-center container mx-auto">
+      <div className="w-1/2 hidden text-center lg:block">
         <h1 className="text-3xl font-bold">GadgetBD</h1>
         <p className="text-sm mt-2">
           Sign in to your gadgetBD account to shop the latest gadgets and manage
@@ -88,6 +126,19 @@ const Login = () => {
             <Link to={"/sign-up"} className="text-blue-400 ml-1">
               Sign Up
             </Link>
+          </div>
+
+          <div className="divider">OR</div>
+
+          <div className="flex gap-4 justify-center">
+            <button className="flex gap-1 items-center btn ">
+              <FcGoogle />
+              Google
+            </button>
+            <button className="flex gap-1 items-center btn text-blue-600 font-bold">
+              <FaFacebook />
+              Facebook
+            </button>
           </div>
         </div>
       </div>
