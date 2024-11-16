@@ -58,8 +58,13 @@ const Navbar = () => {
           ))}
         </ul>
       </div>
-      <div className="navbar-end">
-        <a className="btn">Button</a>
+      <div className="navbar-end gap-1">
+        <Link to={"/login"}>
+          <button className="btn bg-blue-950 text-white">Login</button>
+        </Link>
+        <Link to={"/sign-up"}>
+          <button className="btn bg-black text-white">Sign Up</button>
+        </Link>
       </div>
     </div>
   );
