@@ -7,16 +7,20 @@ import { LuUser2 } from "react-icons/lu";
 import { MdOutlineMail } from "react-icons/md";
 import { PiUsersThreeLight } from "react-icons/pi";
 import { RiKeyLine } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
 import axios from "axios";
 import Swal from "sweetalert2";
+import ButtonLoading from "../../components/Shared/ButtonLoading";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const SignUp = () => {
   const { SignUp, UpdateProfile, loading, setLoading } =
     useContext(AuthContext);
   const imageHostingKey = import.meta.env.VITE_IMAGE_API_KEY;
   const image_hosting_url = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
+  const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
 
   const {
     register,
@@ -28,14 +32,6 @@ const SignUp = () => {
   const onSubmit = (data) => {
     const imageFile = { image: data.image[0] };
     console.log(imageFile);
-    const userData = {
-      name: data.name,
-      email: data.email,
-      role: "buyer",
-      wishList: [],
-      cartList: [],
-    };
-    console.log(userData);
 
     SignUp(data.email, data.password)
       .then(async (res) => {
@@ -47,8 +43,16 @@ const SignUp = () => {
           });
           if (imageHosting.data.success) {
             const image = imageHosting.data.data.display_url;
+            const userData = {
+              name: data.name,
+              email: data.email,
+              image: image,
+              role: "buyer",
+              wishList: [],
+              cartList: [],
+            };
             UpdateProfile(data.name, image)
-              .then(() => {
+              .then(async () => {
                 Swal.fire({
                   position: "center",
                   icon: "success",
@@ -56,7 +60,10 @@ const SignUp = () => {
                   showConfirmButton: false,
                   timer: 1500,
                 });
+                const res = await axiosSecure.post("/users", userData);
+                console.log(res.data);
                 setLoading(false);
+                navigate("/");
               })
               .catch((err) => {
                 console.log(err);
@@ -65,7 +72,7 @@ const SignUp = () => {
         }
         console.log(res);
       })
-      .catch((err) => {
+      .catch(() => {
         Swal.fire({
           position: "center",
           icon: "warning",
@@ -170,11 +177,7 @@ const SignUp = () => {
               <Link>Forgot Password?</Link>
             </div>
             <button type="submit" className="btn w-full">
-              {loading ? (
-                <span className="loading loading-dots loading-md"></span>
-              ) : (
-                "Sign Up"
-              )}
+              {loading ? <ButtonLoading /> : "Sign Up"}
             </button>
           </form>
 

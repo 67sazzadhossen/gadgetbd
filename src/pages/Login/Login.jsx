@@ -6,11 +6,13 @@ import { LuUser2 } from "react-icons/lu";
 import { MdOutlineMail } from "react-icons/md";
 import { PiUsersThreeLight } from "react-icons/pi";
 import { RiKeyLine } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
 import Swal from "sweetalert2";
+import ButtonLoading from "../../components/Shared/ButtonLoading";
 const Login = () => {
   const { Login, loading, setLoading } = useContext(AuthContext);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -32,6 +34,7 @@ const Login = () => {
           });
 
           setLoading(false);
+          navigate("/");
         }
       })
       .catch((err) => {
@@ -111,11 +114,7 @@ const Login = () => {
             <Link>Forgot Password?</Link>
           </div>
           <button type="submit" className="btn w-full">
-            {loading ? (
-              <span className="loading loading-dots loading-md"></span>
-            ) : (
-              "Login"
-            )}
+            {loading ? <ButtonLoading /> : "Login"}
           </button>
         </form>
         <div className="lg:w-2/3 mx-auto mt-2">

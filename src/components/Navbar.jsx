@@ -1,9 +1,10 @@
 import { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../Providers/AuthProvider";
+import ButtonLoading from "./Shared/ButtonLoading";
 
 const Navbar = () => {
-  const { currentUser, Logout } = useContext(AuthContext);
+  const { currentUser, Logout, loading } = useContext(AuthContext);
   console.log(currentUser);
   const links = [
     { name: "home", path: "/" },
@@ -62,47 +63,66 @@ const Navbar = () => {
           ))}
         </ul>
       </div>
-      <div className="navbar-end gap-1">
-        {currentUser ? (
-          <div>
-            <div className="dropdown dropdown-end">
-              <div tabIndex={0} role="button" className=" ">
-                <div className="avatar">
-                  <div className="w-12 rounded-full ring-2 ring-blue-800">
-                    <img className="rounded-full" src={currentUser?.photoURL} />
+      {loading ? (
+        <>
+          <div className="navbar-end gap-1">
+            <ButtonLoading />
+          </div>
+        </>
+      ) : (
+        <div className="navbar-end gap-1">
+          {currentUser ? (
+            <div>
+              <div className="dropdown dropdown-end">
+                <div tabIndex={0} role="button" className=" ">
+                  <div className="avatar">
+                    <div className="w-12 rounded-full ring-2 ring-blue-800">
+                      <img
+                        className="rounded-full"
+                        src={currentUser?.photoURL}
+                      />
+                    </div>
                   </div>
                 </div>
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow space-y-2 text-center"
+                >
+                  <li className="text-lg font-medium ">
+                    {currentUser?.displayName}
+                  </li>
+                  <li className="text-lg font-medium">{currentUser?.email}</li>
+                  <li>
+                    <Link
+                      to={"/dashboard"}
+                      className="btn btn-sm w-full btn-success text-white"
+                    >
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => Logout()}
+                      className="btn btn-sm w-full btn-error text-white"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </ul>
               </div>
-              <ul
-                tabIndex={0}
-                className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow space-y-2 text-center"
-              >
-                <li className="text-lg font-medium ">
-                  {currentUser?.displayName}
-                </li>
-                <li className="text-lg font-medium">{currentUser?.email}</li>
-                <li>
-                  <button
-                    onClick={() => Logout()}
-                    className="btn btn-sm w-full btn-error text-white"
-                  >
-                    Logout
-                  </button>
-                </li>
-              </ul>
             </div>
-          </div>
-        ) : (
-          <>
-            <Link to={"/login"}>
-              <button className="btn bg-blue-950 text-white">Login</button>
-            </Link>
-            <Link to={"/sign-up"}>
-              <button className="btn bg-black text-white">Sign Up</button>
-            </Link>
-          </>
-        )}
-      </div>
+          ) : (
+            <>
+              <Link to={"/login"}>
+                <button className="btn bg-blue-950 text-white">Login</button>
+              </Link>
+              <Link to={"/sign-up"}>
+                <button className="btn bg-black text-white">Sign Up</button>
+              </Link>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 };
