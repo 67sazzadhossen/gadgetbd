@@ -20,7 +20,7 @@ const Banner = () => {
             {/* <h1 className="mb-5 text-5xl font-bold">{banner.name}</h1> */}
             <h1 className="mb-5 text-4xl font-medium">{banner.title}</h1>
             <p className="mb-5">{banner.subtitle}</p>
-            <button className="btn btn-primary">Shop Now</button>
+            <button className="btn btn-outline text-white">Shop Now</button>
           </div>
         </div>
       </div>
