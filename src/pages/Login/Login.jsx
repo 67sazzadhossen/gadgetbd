@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { LuUser2 } from "react-icons/lu";
 import { MdOutlineMail } from "react-icons/md";
@@ -11,7 +10,7 @@ import { AuthContext } from "../../Providers/AuthProvider";
 import Swal from "sweetalert2";
 import ButtonLoading from "../../components/Shared/ButtonLoading";
 const Login = () => {
-  const { Login, loading, setLoading } = useContext(AuthContext);
+  const { Login, loading, setLoading, GoogleLogin } = useContext(AuthContext);
   const navigate = useNavigate();
   const {
     register,
@@ -19,6 +18,20 @@ const Login = () => {
 
     formState: { errors },
   } = useForm();
+
+  const handleGoogleLogin = () => {
+    GoogleLogin()
+      .then(async (res) => {
+        if (res.user) {
+          setLoading(false);
+          navigate("/");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const onSubmit = (data) => {
     console.log(data);
 
@@ -85,28 +98,26 @@ const Login = () => {
           className="space-y-5 lg:w-2/3 mx-auto"
         >
           {inputs.map((input, idx) => (
-            <div
-              key={idx}
-              className="bg-base-300 flex items-center px-4 rounded-md"
-            >
-              {input.icon}
-              <div className="divider divider-horizontal py-2"></div>
-              <input
-                {...register(`${input.name}`, {
-                  required: `${input.placeHolder} is required`,
-                })}
-                type={input.type}
-                className="w-full bg-transparent py-2 outline-none bg-none"
-                placeholder={input.placeHolder}
-              />
+            <div key={idx}>
+              <div className="bg-base-300 flex items-center px-4 rounded-md">
+                {input.icon}
+                <div className="divider divider-horizontal py-2"></div>
+                <input
+                  {...register(`${input.name}`, {
+                    required: `${input.placeHolder} is required`,
+                  })}
+                  type={input.type}
+                  className="w-full bg-transparent py-2 outline-none bg-none"
+                  placeholder={input.placeHolder}
+                />
+              </div>
+              {/* Error message displayed directly below the input field */}
+              {errors[input.name] && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors[input.name]?.message}
+                </p>
+              )}
             </div>
-          ))}
-
-          {/* Display error messages */}
-          {Object.keys(errors).map((key) => (
-            <p key={key} className="text-red-500 text-sm mt-1">
-              {errors[key]?.message}
-            </p>
           ))}
 
           <div className="flex gap-2 items-center text-sm px-4">
@@ -117,6 +128,7 @@ const Login = () => {
             {loading ? <ButtonLoading /> : "Login"}
           </button>
         </form>
+
         <div className="lg:w-2/3 mx-auto mt-2">
           <div className="ml-1">
             {`Don't have an account?`}
@@ -127,16 +139,13 @@ const Login = () => {
 
           <div className="divider">OR</div>
 
-          <div className="flex gap-4 justify-center">
-            <button className="flex gap-1 items-center btn ">
-              <FcGoogle />
-              Google
-            </button>
-            <button className="flex gap-1 items-center btn text-blue-600 font-bold">
-              <FaFacebook />
-              Facebook
-            </button>
-          </div>
+          <button
+            onClick={handleGoogleLogin}
+            className="flex gap-1 items-center btn w-full"
+          >
+            <FcGoogle />
+            Google
+          </button>
         </div>
       </div>
     </div>

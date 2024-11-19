@@ -2,8 +2,10 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   updateProfile,
+  GoogleAuthProvider,
 } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import auth from "../firebase/firebase.config";
@@ -14,11 +16,17 @@ export const AuthContext = createContext(null);
 
 // eslint-disable-next-line react/prop-types
 const AuthProvider = ({ children }) => {
+  const provider = new GoogleAuthProvider();
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const SignUp = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
+  };
+
+  const GoogleLogin = () => {
+    setLoading(true);
+    return signInWithPopup(auth, provider);
   };
 
   const UpdateProfile = (name, image) => {
@@ -46,15 +54,21 @@ const AuthProvider = ({ children }) => {
 
       if (currentUser) {
         axios
-          .post("https://gadgetbd-server.vercel.app/jwt", loggedUser, {
+          .post("http://localhost:3000/jwt", loggedUser, {
             withCredentials: true,
           })
+          // .post("https://gadgetbd-server.vercel.app/jwt", loggedUser, {
+          //   withCredentials: true,
+          // })
           .then((res) => {
             console.log("token", res.data);
           });
       } else {
         axios
-          .post("https://gadgetbd-server.vercel.app/log-out", loggedUser, {
+          // .post("https://gadgetbd-server.vercel.app/log-out", loggedUser, {
+          //   withCredentials: true,
+          // })
+          .post("http://localhost:3000/log-out", loggedUser, {
             withCredentials: true,
           })
           .then((res) => {
@@ -75,6 +89,7 @@ const AuthProvider = ({ children }) => {
     setLoading,
     Login,
     Logout,
+    GoogleLogin,
   };
 
   return (
