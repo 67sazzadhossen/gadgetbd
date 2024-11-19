@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const axiosPublic = axios.create({
+const axiosSecure = axios.create({
   baseURL: "https://gadgetbd-server.vercel.app",
 });
 
 const useAxiosSecure = () => {
-  return axiosPublic;
+  return axiosSecure;
 };
 
 export default useAxiosSecure;
