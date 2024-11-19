@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosPublic = axios.create({
-  baseURL: ["https://gadgetbd-server.vercel.app"],
+  baseURL: "https://gadgetbd-server.vercel.app",
 });
 
 const useAxiosSecure = () => {
