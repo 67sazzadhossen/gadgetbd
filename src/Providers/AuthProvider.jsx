@@ -60,8 +60,8 @@ const AuthProvider = ({ children }) => {
           // .post("https://gadgetbd-server.vercel.app/jwt", loggedUser, {
           //   withCredentials: true,
           // })
-          .then((res) => {
-            console.log("token", res.data);
+          .then(() => {
+            // console.log("token", res.data);
           });
       } else {
         axios
@@ -71,8 +71,8 @@ const AuthProvider = ({ children }) => {
           .post("http://localhost:3000/log-out", loggedUser, {
             withCredentials: true,
           })
-          .then((res) => {
-            console.log(res.data);
+          .then(() => {
+            // console.log(res.data);
           });
       }
     });

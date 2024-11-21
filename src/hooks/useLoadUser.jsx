@@ -23,7 +23,7 @@ const useLoadUser = () => {
     },
     enabled: !loading, // Only run query if email exists
   });
-  console.log(user);
+  // console.log(user);
 
   return { user, isLoading, error };
 };

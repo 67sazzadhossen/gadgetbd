@@ -7,6 +7,16 @@ import Contact from "../pages/Contact/Contact";
 import Login from "../pages/Login/Login";
 import SignUp from "../pages/SignUp/SignUp";
 import DashboardLayout from "../Layout/DashboardLayout";
+import DashWishlist from "../pages/Dashboard/DashWishlist";
+import DashCart from "../pages/Dashboard/DashCart";
+import DashHome from "../pages/Dashboard/DashHome";
+import MyProducts from "../pages/Dashboard/MyProducts";
+import AddProduct from "../pages/Dashboard/AddProduct";
+import SellerRoute from "./RouterProtector/SellerRoute";
+import AdminRoute from "./RouterProtector/AdminRoute";
+import ManageUsers from "../pages/Dashboard/ManageUsers";
+import BuyerRoute from "./RouterProtector/BuyerRoute";
+import UpdateProduct from "../components/Shared/UpdateProduct";
 
 export const router = createBrowserRouter(
   [
@@ -44,7 +54,65 @@ export const router = createBrowserRouter(
     {
       path: "dashboard",
       element: <DashboardLayout />,
-      children: [{}],
+      children: [
+        // buyer route
+        {
+          path: "/dashboard/home",
+          element: <DashHome />,
+        },
+        {
+          path: "/dashboard/wishlist",
+          element: (
+            <BuyerRoute>
+              <DashWishlist />
+            </BuyerRoute>
+          ),
+        },
+        {
+          path: "/dashboard/cartlist",
+          element: (
+            <BuyerRoute>
+              <DashCart />
+            </BuyerRoute>
+          ),
+        },
+
+        // seller route
+        {
+          path: "/dashboard/my-products",
+          element: (
+            <SellerRoute>
+              <MyProducts />
+            </SellerRoute>
+          ),
+        },
+        {
+          path: "/dashboard/add-product",
+          element: (
+            <SellerRoute>
+              <AddProduct />
+            </SellerRoute>
+          ),
+        },
+        {
+          path: "/dashboard/update-product/:id",
+          element: (
+            <SellerRoute>
+              <UpdateProduct />
+            </SellerRoute>
+          ),
+        },
+
+        // Admin route
+        {
+          path: "/dashboard/manage-users",
+          element: (
+            <AdminRoute>
+              <ManageUsers />
+            </AdminRoute>
+          ),
+        },
+      ],
     },
   ],
   {

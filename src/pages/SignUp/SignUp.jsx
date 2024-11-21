@@ -1,11 +1,10 @@
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { IoText } from "react-icons/io5";
 import { LuUser2 } from "react-icons/lu";
-import { MdOutlineMail } from "react-icons/md";
 import { PiUsersThreeLight } from "react-icons/pi";
-import { RiKeyLine } from "react-icons/ri";
+import { RiKeyLine, RiEyeLine, RiEyeOffLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
 import axios from "axios";
@@ -20,6 +19,9 @@ const SignUp = () => {
   const image_hosting_url = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleGoogleLogin = () => {
     GoogleLogin()
@@ -54,7 +56,6 @@ const SignUp = () => {
 
   const onSubmit = (data) => {
     const imageFile = { image: data.image[0] };
-    console.log(imageFile);
 
     SignUp(data.email, data.password)
       .then(async (res) => {
@@ -90,6 +91,7 @@ const SignUp = () => {
               })
               .catch((err) => {
                 console.log(err);
+                setLoading(false);
               });
           }
         }
@@ -99,7 +101,7 @@ const SignUp = () => {
         Swal.fire({
           position: "center",
           icon: "warning",
-          title: "Email has already used",
+          title: "Email has already been used",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -122,18 +124,6 @@ const SignUp = () => {
       icon: <LuUser2 size={20} />,
       type: "email",
     },
-    {
-      name: "password",
-      placeHolder: "Your Password",
-      icon: <RiKeyLine size={20} />,
-      type: "password",
-    },
-    {
-      name: "confirmPass",
-      placeHolder: "Confirm Password",
-      icon: <RiKeyLine size={20} />,
-      type: "password",
-    },
   ];
 
   return (
@@ -154,7 +144,6 @@ const SignUp = () => {
 
           <form
             onSubmit={handleSubmit(onSubmit)}
-            action=""
             className="space-y-5 lg:w-2/3 mx-auto"
           >
             {inputs.map((input, idx) => (
@@ -165,26 +154,12 @@ const SignUp = () => {
                   <input
                     {...register(`${input.name}`, {
                       required: `${input.placeHolder} is required`,
-                      validate: {
-                        matchPassword: (value) =>
-                          input.name === "confirmPass"
-                            ? value === password || "Passwords do not match"
-                            : true, // Return true for non-confirmPass fields
-                        strongPassword: (value) =>
-                          input.name === "password"
-                            ? /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/.test(
-                                value
-                              ) ||
-                              "Password must be at least 8 characters, include uppercase, lowercase, a number, and a special character."
-                            : true, // Return true for non-password fields
-                      },
                     })}
                     type={input.type}
                     className="w-full bg-transparent py-2 outline-none"
                     placeholder={input.placeHolder}
                   />
                 </div>
-                {/* Display error message below the field */}
                 {errors[input.name] && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors[input.name]?.message}
@@ -193,7 +168,80 @@ const SignUp = () => {
               </div>
             ))}
 
-            {/* Image input with error handling */}
+            {/* Password Field */}
+            <div>
+              <div className="bg-base-300 flex items-center px-4 rounded-md">
+                <RiKeyLine size={20} />
+                <div className="divider divider-horizontal py-2"></div>
+                <input
+                  {...register("password", {
+                    required: "Password is required",
+                    validate: {
+                      strongPassword: (value) =>
+                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/.test(
+                          value
+                        ) ||
+                        "Password must be at least 8 characters, include uppercase, lowercase, a number, and a special character.",
+                    },
+                  })}
+                  type={showPassword ? "text" : "password"}
+                  className="w-full bg-transparent py-2 outline-none"
+                  placeholder="Your Password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="ml-2"
+                >
+                  {showPassword ? (
+                    <RiEyeOffLine size={20} />
+                  ) : (
+                    <RiEyeLine size={20} />
+                  )}
+                </button>
+              </div>
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.password?.message}
+                </p>
+              )}
+            </div>
+
+            {/* Confirm Password Field */}
+            <div>
+              <div className="bg-base-300 flex items-center px-4 rounded-md">
+                <RiKeyLine size={20} />
+                <div className="divider divider-horizontal py-2"></div>
+                <input
+                  {...register("confirmPass", {
+                    required: "Confirm Password is required",
+                    validate: (value) =>
+                      value === password || "Passwords do not match",
+                  })}
+                  type={showConfirmPassword ? "text" : "password"}
+                  className="w-full bg-transparent py-2 outline-none"
+                  placeholder="Confirm Password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="ml-2"
+                >
+                  {showConfirmPassword ? (
+                    <RiEyeOffLine size={20} />
+                  ) : (
+                    <RiEyeLine size={20} />
+                  )}
+                </button>
+              </div>
+              {errors.confirmPass && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.confirmPass?.message}
+                </p>
+              )}
+            </div>
+
+            {/* Image Input */}
             <div>
               <input
                 type="file"
@@ -209,10 +257,6 @@ const SignUp = () => {
               )}
             </div>
 
-            <div className="flex gap-2 items-center text-sm px-4">
-              <MdOutlineMail size={16} />
-              <Link>Forgot Password?</Link>
-            </div>
             <button type="submit" className="btn w-full">
               {loading ? <ButtonLoading /> : "Sign Up"}
             </button>

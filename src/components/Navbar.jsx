@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../Providers/AuthProvider";
 import ButtonLoading from "./Shared/ButtonLoading";
+import { IoCartSharp } from "react-icons/io5";
 
 const Navbar = () => {
   const { currentUser, Logout, loading } = useContext(AuthContext);
@@ -13,7 +14,7 @@ const Navbar = () => {
     { name: "contact us", path: "/contact-us" },
   ];
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-100 ">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -86,7 +87,7 @@ const Navbar = () => {
                 </div>
                 <ul
                   tabIndex={0}
-                  className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow space-y-2 text-center"
+                  className="dropdown-content menu  bg-base-100 rounded-box z-[1] p-2 shadow space-y-2 text-center"
                 >
                   <li className="text-lg font-medium ">
                     {currentUser?.displayName}
@@ -94,7 +95,7 @@ const Navbar = () => {
                   <li className="text-lg font-medium">{currentUser?.email}</li>
                   <li>
                     <Link
-                      to={"/dashboard"}
+                      to={"/dashboard/home"}
                       className="btn btn-sm w-full btn-success text-white"
                     >
                       Dashboard
@@ -121,6 +122,12 @@ const Navbar = () => {
               </Link>
             </>
           )}
+          <div className="ml-2">
+            <button className="btn bg-transparent border-none">
+              <IoCartSharp size={36} />
+              <div className="badge">+99</div>
+            </button>
+          </div>
         </div>
       )}
     </div>

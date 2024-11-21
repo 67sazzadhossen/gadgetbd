@@ -1,21 +1,25 @@
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { LuUser2 } from "react-icons/lu";
 import { MdOutlineMail } from "react-icons/md";
 import { PiUsersThreeLight } from "react-icons/pi";
-import { RiKeyLine } from "react-icons/ri";
-import { Link, useNavigate } from "react-router-dom";
+import { RiKeyLine, RiEyeLine, RiEyeOffLine } from "react-icons/ri"; // Added icons for eye
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
 import Swal from "sweetalert2";
 import ButtonLoading from "../../components/Shared/ButtonLoading";
+
 const Login = () => {
   const { Login, loading, setLoading, GoogleLogin } = useContext(AuthContext);
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const from = location.state?.from?.pathname || "/";
+  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
   const {
     register,
     handleSubmit,
-
     formState: { errors },
   } = useForm();
 
@@ -24,7 +28,7 @@ const Login = () => {
       .then(async (res) => {
         if (res.user) {
           setLoading(false);
-          navigate("/");
+          navigate(from, { replace: true });
         }
       })
       .catch((err) => {
@@ -41,13 +45,13 @@ const Login = () => {
           Swal.fire({
             position: "center",
             icon: "success",
-            title: "Login Successfull",
+            title: "Login Successful",
             showConfirmButton: false,
             timer: 1500,
           });
 
           setLoading(false);
-          navigate("/");
+          navigate(from, { replace: true });
         }
       })
       .catch((err) => {
@@ -59,21 +63,17 @@ const Login = () => {
             showConfirmButton: false,
             timer: 1500,
           });
+          setLoading(false);
         }
       });
   };
+
   const inputs = [
     {
       name: "email",
       placeHolder: "Your email",
       icon: <LuUser2 size={20} />,
       type: "email",
-    },
-    {
-      name: "password",
-      placeHolder: "Your Password",
-      icon: <RiKeyLine size={20} />,
-      type: "password",
     },
   ];
 
@@ -111,7 +111,6 @@ const Login = () => {
                   placeholder={input.placeHolder}
                 />
               </div>
-              {/* Error message displayed directly below the input field */}
               {errors[input.name] && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors[input.name]?.message}
@@ -119,6 +118,38 @@ const Login = () => {
               )}
             </div>
           ))}
+
+          {/* Password Input */}
+          <div>
+            <div className="bg-base-300 flex items-center px-4 rounded-md">
+              <RiKeyLine size={20} />
+              <div className="divider divider-horizontal py-2"></div>
+              <input
+                {...register("password", {
+                  required: "Password is required",
+                })}
+                type={showPassword ? "text" : "password"} // Toggle input type
+                className="w-full bg-transparent py-2 outline-none bg-none"
+                placeholder="Your Password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="ml-2"
+              >
+                {showPassword ? (
+                  <RiEyeOffLine size={20} />
+                ) : (
+                  <RiEyeLine size={20} />
+                )}
+              </button>
+            </div>
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password?.message}
+              </p>
+            )}
+          </div>
 
           <div className="flex gap-2 items-center text-sm px-4">
             <MdOutlineMail size={16} />
