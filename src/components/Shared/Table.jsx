@@ -1,28 +1,37 @@
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { Link } from "react-router-dom";
+import { GrUpdate } from "react-icons/gr";
+import { MdDelete } from "react-icons/md";
 
 /* eslint-disable react/prop-types */
 const Table = ({ products, refetch }) => {
   const axiosSecure = useAxiosSecure();
 
-  const handleDeleteProduct = async (id) => {
-    const res = await axiosSecure.delete(`/delete-product/${id}`);
-    if (res.data.message === "success") {
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Product Deleted",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      refetch();
-    }
+  const handleDeleteProduct = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await axiosSecure.delete(`/delete-product/${id}`);
+        if (res.data.message === "success") {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your product is deleted.",
+            icon: "success",
+          });
+          refetch();
+        }
+      }
+    });
   };
 
-  const handleUpdate = (id) => {
-    console.log(id);
-  };
   return (
     <>
       <div className="overflow-x-auto">
@@ -61,21 +70,19 @@ const Table = ({ products, refetch }) => {
                 </td>
                 <td>{product.description}</td>
                 <td>{product.category}</td>
-                <th className="space-x-1">
-                  <button
-                    onClick={() => handleUpdate(product._id)}
+                <th className="space-x-1 flex">
+                  <Link
                     className="btn btn-xs btn-warning"
+                    to={`/dashboard/update-product/${product._id}`}
                   >
-                    <Link to={`/dashboard/update-product/${product._id}`}>
-                      Update
-                    </Link>
-                  </button>
+                    <GrUpdate />
+                  </Link>
 
                   <button
                     onClick={() => handleDeleteProduct(product._id)}
                     className="btn btn-xs btn-error text-white"
                   >
-                    Delete
+                    <MdDelete />
                   </button>
                 </th>
               </tr>

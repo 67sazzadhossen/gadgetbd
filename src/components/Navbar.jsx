@@ -6,7 +6,7 @@ import { IoCartSharp } from "react-icons/io5";
 
 const Navbar = () => {
   const { currentUser, Logout, loading } = useContext(AuthContext);
-  console.log(currentUser);
+  // console.log(currentUser);
   const links = [
     { name: "home", path: "/" },
     { name: "products", path: "/products" },

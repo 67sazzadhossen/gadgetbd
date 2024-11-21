@@ -1,7 +1,10 @@
 import axios from "axios";
 
+// const axiosPublic = axios.create({
+//   baseURL: "http://localhost:3000",
+// });
 const axiosPublic = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://gadgetbd-server.vercel.app",
 });
 
 const useAxiosPublic = () => {

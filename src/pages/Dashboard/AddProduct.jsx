@@ -3,12 +3,17 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import axios from "axios";
 import Swal from "sweetalert2";
 import useLoadUser from "../../hooks/useLoadUser";
+import { useState } from "react";
+import ButtonLoading from "../../components/Shared/ButtonLoading";
+import { useNavigate } from "react-router";
 
 const AddProduct = () => {
   const { user } = useLoadUser();
+  const [loading, setLoading] = useState(false);
   const axiosSecure = useAxiosSecure();
   const imageHostingKey = import.meta.env.VITE_IMAGE_API_KEY;
   const image_hosting_url = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -17,6 +22,7 @@ const AddProduct = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setLoading(true);
     const imageFile = { image: data.image[0] };
 
     const imageHosting = await axios.post(image_hosting_url, imageFile, {
@@ -30,6 +36,7 @@ const AddProduct = () => {
         email: user.email,
         name: data.name,
         category: data.category,
+        brand: data.brand, // Include the brand field
         price: data.price,
         description: data.description,
         image: imageHosting.data.data.display_url,
@@ -46,10 +53,11 @@ const AddProduct = () => {
           timer: 1500,
         });
         reset();
+        setLoading(false);
+        navigate("/dashboard/my-products");
       }
     }
   };
-
 
   return (
     <>
@@ -92,6 +100,22 @@ const AddProduct = () => {
             {errors.category && (
               <p className="text-red-500 text-sm mt-1">
                 {errors.category.message}
+              </p>
+            )}
+          </div>
+
+          {/* Brand */}
+          <div>
+            <label className="block text-sm font-medium mb-1">Brand</label>
+            <input
+              type="text"
+              {...register("brand", { required: "Brand is required" })}
+              placeholder="Enter product brand"
+              className="w-full border rounded-md p-2"
+            />
+            {errors.brand && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.brand.message}
               </p>
             )}
           </div>
@@ -176,7 +200,7 @@ const AddProduct = () => {
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
           >
-            Add Product
+            {loading ? <ButtonLoading /> : "Add Product"}
           </button>
         </form>
       </div>

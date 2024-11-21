@@ -7,7 +7,7 @@ const useLoadSingleProduct = (id) => {
     queryKey: [id],
     enabled: !!id,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/signle-product/${id}`);
+      const res = await axiosSecure.get(`/single-product/${id}`);
       return res.data;
     },
   });

@@ -16,7 +16,8 @@ import SellerRoute from "./RouterProtector/SellerRoute";
 import AdminRoute from "./RouterProtector/AdminRoute";
 import ManageUsers from "../pages/Dashboard/ManageUsers";
 import BuyerRoute from "./RouterProtector/BuyerRoute";
-import UpdateProduct from "../components/Shared/UpdateProduct";
+import UpdateProduct from "../pages/Dashboard/UpdateProduct";
+import ProductDetails from "../pages/Products/Details/ProductDetails";
 
 export const router = createBrowserRouter(
   [
@@ -31,6 +32,10 @@ export const router = createBrowserRouter(
         {
           path: "/products",
           element: <Products />,
+        },
+        {
+          path: "/product-details/:id",
+          element: <ProductDetails />,
         },
         {
           path: "/about",
@@ -117,12 +122,11 @@ export const router = createBrowserRouter(
   ],
   {
     future: {
-      v7_startTransition: false, // Disable startTransition warnings
-      v7_relativeSplatPath: false, // Disable splat route resolution warnings
-      v7_fetcherPersist: false, // Disable fetcher persistence warnings
-      v7_normalizeFormMethod: false, // Disable form method warnings
-      v7_partialHydration: false, // Disable partial hydration warnings
-      v7_skipActionErrorRevalidation: false, // Disable action error revalidation warnings
+      v7_relativeSplatPath: true,
+      v7_fetcherPersist: true,
+      v7_normalizeFormMethod: true,
+      v7_partialHydration: true,
+      v7_skipActionErrorRevalidation: true,
     },
   }
 );

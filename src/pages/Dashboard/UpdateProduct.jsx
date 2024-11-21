@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import useLoadSingleProduct from "../../hooks/useLoadSingleProduct";
 import axios from "axios";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const UpdateProduct = () => {
   const { id } = useParams();
@@ -48,12 +49,20 @@ const UpdateProduct = () => {
       image: imageUrl,
     };
 
-    console.log(updatedProduct);
     const response = await axiosSecure.patch(
       `/update-product/${id}`,
       updatedProduct
     );
-    console.log(response.data);
+    if (response.data.status === 200) {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Updated Successfully",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      navigate(-1);
+    }
   };
 
   return (
@@ -93,6 +102,22 @@ const UpdateProduct = () => {
           />
           {errors.category && (
             <p className="text-red-500 text-sm">{errors.category.message}</p>
+          )}
+        </div>
+
+        {/* Brand */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Brand</label>
+          <input
+            type="text"
+            {...register("brand", {
+              required: "Check brand, if ok click update",
+            })}
+            defaultValue={singleProduct?.brand}
+            className="w-full border rounded-md p-2"
+          />
+          {errors.brand && (
+            <p className="text-red-500 text-sm">{errors.brand.message}</p>
           )}
         </div>
 
