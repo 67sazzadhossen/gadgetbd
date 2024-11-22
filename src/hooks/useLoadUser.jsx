@@ -18,7 +18,9 @@ const useLoadUser = () => {
         // Explicitly return null if no email is available
         return null;
       }
-      const response = await axiosSecure.get(`/user/${currentUser.email}`);
+      const response = await axiosSecure.get(
+        `/user/${currentUser.email}?email=$${currentUser.email}`
+      );
       return response.data.data; // Return the fetched data
     },
     enabled: !loading, // Only run query if email exists

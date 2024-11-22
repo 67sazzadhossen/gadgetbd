@@ -5,11 +5,13 @@ import { GrUpdate } from "react-icons/gr";
 import { MdAddShoppingCart, MdDelete } from "react-icons/md";
 import useLoadUser from "../../hooks/useLoadUser";
 import useAddToCart from "../../hooks/useAddToCart";
+import useMyProducts from "../../hooks/useMyProducts";
 
 /* eslint-disable react/prop-types */
 const Table = ({ products, refetch, wishlist, cartlist }) => {
   const axiosSecure = useAxiosSecure();
   const { user } = useLoadUser();
+  const { refetch: myproductRefetch } = useMyProducts();
 
   const handleDeleteProduct = (id) => {
     Swal.fire({
@@ -22,14 +24,17 @@ const Table = ({ products, refetch, wishlist, cartlist }) => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await axiosSecure.delete(`/delete-product/${id}`);
-        if (res.data.message === "success") {
+        const res = await axiosSecure.delete(
+          `/delete-product/${id}?email=${user?.email}`
+        );
+        console.log(res.status);
+        if (res.status === 200) {
           Swal.fire({
             title: "Deleted!",
             text: "Your product is deleted.",
             icon: "success",
           });
-          refetch();
+          myproductRefetch();
         }
       }
     });

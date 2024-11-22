@@ -4,8 +4,10 @@ import useLoadSingleProduct from "../../hooks/useLoadSingleProduct";
 import axios from "axios";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import useLoadUser from "../../hooks/useLoadUser";
 
 const UpdateProduct = () => {
+  const { user } = useLoadUser();
   const { id } = useParams();
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
@@ -50,7 +52,7 @@ const UpdateProduct = () => {
     };
 
     const response = await axiosSecure.patch(
-      `/update-product/${id}`,
+      `/update-product/${id}?email=${user?.email}`,
       updatedProduct
     );
     if (response.data.status === 200) {

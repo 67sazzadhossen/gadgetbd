@@ -10,7 +10,8 @@ const DashNav = () => {
 
   const links = {
     buyer: [
-      { name: "Wishlist", path: "/dashboard/home" },
+      { name: "Profile", path: "/dashboard/home" },
+      { name: "Wishlist", path: "/dashboard/wishlist" },
       { name: "Cartlist", path: "/dashboard/cartlist" },
       { name: "Home", path: "/" },
     ],
@@ -23,6 +24,7 @@ const DashNav = () => {
     admin: [
       { name: "Dashboard Home", path: "/dashboard/home" },
       { name: "Manage Users", path: "/dashboard/manage-users" },
+      { name: "Home", path: "/" },
     ],
   };
 

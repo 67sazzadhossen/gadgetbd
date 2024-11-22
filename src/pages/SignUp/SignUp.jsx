@@ -72,8 +72,8 @@ const SignUp = () => {
               email: data.email,
               image: image,
               role: "buyer",
-              wishList: [],
-              cartList: [],
+              wishlist: [],
+              cartlist: [],
             };
             UpdateProfile(data.name, image)
               .then(async () => {

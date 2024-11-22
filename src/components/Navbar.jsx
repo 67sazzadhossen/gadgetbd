@@ -125,10 +125,10 @@ const Navbar = () => {
             </>
           )}
           <div className="ml-2">
-            <Link to={"/dashboard/home"}>
+            <Link to={"/dashboard/wishlist"}>
               <button className="btn bg-transparent border-none">
                 <IoCartSharp size={36} />
-                <div className="badge">{products?.length}</div>
+                <div className="badge">{products?.length || 0} </div>
               </button>
             </Link>
           </div>

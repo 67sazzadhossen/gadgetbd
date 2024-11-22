@@ -43,7 +43,10 @@ const AddProduct = () => {
         featured: data.featured || false, // Default to false if not checked
       };
 
-      const res = await axiosSecure.post("/add-product", productData);
+      const res = await axiosSecure.post(
+        `/add-product?email=${user?.email}`,
+        productData
+      );
       if (res.data.status === 200) {
         Swal.fire({
           position: "center",

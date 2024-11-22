@@ -10,7 +10,7 @@ const useAddToCart = () => {
 
     try {
       const resp = await axiosSecure.put(
-        `/cartlist/add?id=${id}&&email=${user?.email}`
+        `/cartlist/add?id=${id}&email=${user?.email}`
       );
       console.log(resp.data);
       if (resp.data.success) {
