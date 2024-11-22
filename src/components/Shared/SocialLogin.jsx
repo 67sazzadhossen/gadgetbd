@@ -26,7 +26,7 @@ const SocialLogin = () => {
           };
 
           const data = await axiosPublic.post("/users", userData);
-          // console.log(data.data);
+          console.log(data.data);
           setLoading(false);
           navigate(from, { replace: true });
         }
