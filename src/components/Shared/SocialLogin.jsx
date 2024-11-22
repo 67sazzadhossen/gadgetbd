@@ -25,7 +25,7 @@ const SocialLogin = () => {
             cartlist: [],
           };
 
-          await axiosPublic.post("/users", userData);
+          const data = await axiosPublic.post("/users", userData);
           // console.log(data.data);
           setLoading(false);
           navigate(from, { replace: true });
