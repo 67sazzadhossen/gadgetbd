@@ -1,12 +1,14 @@
-/* eslint-disable react/prop-types */
-
 import { useParams } from "react-router";
 import useLoadSingleProduct from "../../../hooks/useLoadSingleProduct";
+import useAddToWishlist from "../../../hooks/useAddToWishlist";
+import useAddToCart from "../../../hooks/useAddToCart";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const { singleProduct: product, isLoading } = useLoadSingleProduct(id);
   console.log(id);
+  const addToWishlist = useAddToWishlist();
+  const addToCart = useAddToCart();
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -48,10 +50,16 @@ const ProductDetails = () => {
 
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-4">
-            <button className="w-full sm:w-auto bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-md shadow-md hover:bg-blue-700 transition">
+            <button
+              onClick={() => addToCart(product._id)}
+              className="w-full sm:w-auto bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-md shadow-md hover:bg-blue-700 transition"
+            >
               Add to Cart
             </button>
-            <button className="w-full sm:w-auto bg-purple-600 text-white text-sm font-medium py-2 px-4 rounded-md shadow-md hover:bg-purple-700 transition">
+            <button
+              onClick={() => addToWishlist(product._id)}
+              className="w-full sm:w-auto bg-purple-600 text-white text-sm font-medium py-2 px-4 rounded-md shadow-md hover:bg-purple-700 transition"
+            >
               Add to Wishlist
             </button>
           </div>

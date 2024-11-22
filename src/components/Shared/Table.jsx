@@ -2,11 +2,14 @@ import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { Link } from "react-router-dom";
 import { GrUpdate } from "react-icons/gr";
-import { MdDelete } from "react-icons/md";
+import { MdAddShoppingCart, MdDelete } from "react-icons/md";
+import useLoadUser from "../../hooks/useLoadUser";
+import useAddToCart from "../../hooks/useAddToCart";
 
 /* eslint-disable react/prop-types */
-const Table = ({ products, refetch }) => {
+const Table = ({ products, refetch, wishlist, cartlist }) => {
   const axiosSecure = useAxiosSecure();
+  const { user } = useLoadUser();
 
   const handleDeleteProduct = (id) => {
     Swal.fire({
@@ -31,6 +34,82 @@ const Table = ({ products, refetch }) => {
       }
     });
   };
+
+  const removeFromWishlist = async (id) => {
+    try {
+      const resp = await axiosSecure.put(
+        `/wishlist/remove?id=${id}&email=${user?.email}`
+      ); // Fixed double `&`
+      console.log(resp.data);
+
+      if (resp.data.success) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Product has been added to your wishlist",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        refetch();
+      } else {
+        Swal.fire({
+          position: "center",
+          icon: "warning",
+          title: "Product already exists in your wishlist",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } catch (error) {
+      console.error("Error adding to wishlist:", error);
+      Swal.fire({
+        position: "center",
+        icon: "warning",
+        title: "Product already exists in your wishlist",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
+
+  const removeFromCartlist = async (id) => {
+    try {
+      const resp = await axiosSecure.put(
+        `/cartlist/remove?id=${id}&email=${user?.email}`
+      ); // Fixed double `&`
+      console.log(resp.data);
+
+      if (resp.data.success) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Product has been added to your cartlist",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        refetch();
+      } else {
+        Swal.fire({
+          position: "center",
+          icon: "warning",
+          title: "Product already exists in your cartlist",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } catch (error) {
+      console.error("Error adding to wishlist:", error);
+      Swal.fire({
+        position: "center",
+        icon: "warning",
+        title: "Product already exists in your cartlist",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
+
+  const addToCart = useAddToCart();
 
   return (
     <>
@@ -70,21 +149,48 @@ const Table = ({ products, refetch }) => {
                 </td>
                 <td>{product.description}</td>
                 <td>{product.category}</td>
-                <th className="space-x-1 flex">
-                  <Link
-                    className="btn btn-xs btn-warning"
-                    to={`/dashboard/update-product/${product._id}`}
-                  >
-                    <GrUpdate />
-                  </Link>
+                {wishlist ? (
+                  <th className="space-x-1 flex">
+                    <button
+                      onClick={() => addToCart(product._id, removeFromWishlist)}
+                      className="btn btn-xs btn-warning"
+                    >
+                      <MdAddShoppingCart />
+                    </button>
 
-                  <button
-                    onClick={() => handleDeleteProduct(product._id)}
-                    className="btn btn-xs btn-error text-white"
-                  >
-                    <MdDelete />
-                  </button>
-                </th>
+                    <button
+                      onClick={() => removeFromWishlist(product._id)}
+                      className="btn btn-xs btn-error text-white"
+                    >
+                      <MdDelete />
+                    </button>
+                  </th>
+                ) : cartlist ? (
+                  <th className="space-x-1 flex">
+                    <button
+                      onClick={() => removeFromCartlist(product._id)}
+                      className="btn btn-xs btn-error text-white"
+                    >
+                      <MdDelete />
+                    </button>
+                  </th>
+                ) : (
+                  <th className="space-x-1 flex">
+                    <Link
+                      className="btn btn-xs btn-warning"
+                      to={`/dashboard/update-product/${product._id}`}
+                    >
+                      <GrUpdate />
+                    </Link>
+
+                    <button
+                      onClick={() => handleDeleteProduct(product._id)}
+                      className="btn btn-xs btn-error text-white"
+                    >
+                      <MdDelete />
+                    </button>
+                  </th>
+                )}
               </tr>
             ))}
           </tbody>

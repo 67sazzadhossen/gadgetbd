@@ -3,9 +3,11 @@ import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../Providers/AuthProvider";
 import ButtonLoading from "./Shared/ButtonLoading";
 import { IoCartSharp } from "react-icons/io5";
+import useLoadWishlist from "../hooks/useLoadWishlist";
 
 const Navbar = () => {
   const { currentUser, Logout, loading } = useContext(AuthContext);
+  const { products } = useLoadWishlist();
   // console.log(currentUser);
   const links = [
     { name: "home", path: "/" },
@@ -123,10 +125,12 @@ const Navbar = () => {
             </>
           )}
           <div className="ml-2">
-            <button className="btn bg-transparent border-none">
-              <IoCartSharp size={36} />
-              <div className="badge">+99</div>
-            </button>
+            <Link to={"/dashboard/home"}>
+              <button className="btn bg-transparent border-none">
+                <IoCartSharp size={36} />
+                <div className="badge">{products?.length}</div>
+              </button>
+            </Link>
           </div>
         </div>
       )}

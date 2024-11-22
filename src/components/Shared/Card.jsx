@@ -2,10 +2,14 @@
 
 import { Link } from "react-router-dom";
 import useLoadUser from "../../hooks/useLoadUser";
+import useAddToWishlist from "../../hooks/useAddToWishlist";
 
 const Card = ({ product }) => {
   const { user } = useLoadUser();
-  console.log(user?.role);
+  // console.log(user?.role);
+
+  const addToWishlist = useAddToWishlist();
+
   return (
     <div className="card bg-gradient-to-br from-pink-50 to-blue-50 shadow-lg rounded-lg overflow-hidden flex flex-col h-full transition-transform transform hover:scale-105 duration-300 border border-gray-200">
       {/* Image Section */}
@@ -55,7 +59,10 @@ const Card = ({ product }) => {
           </div>
         ) : (
           <div className="card-actions mt-4 gap-2">
-            <button className="w-full bg-gradient-to-r from-teal-200 to-blue-200 text-teal-800 text-sm font-medium py-2 rounded-md shadow-md hover:from-teal-300 hover:to-blue-300 transition">
+            <button
+              onClick={() => addToWishlist(product._id)}
+              className="w-full bg-gradient-to-r from-teal-200 to-blue-200 text-teal-800 text-sm font-medium py-2 rounded-md shadow-md hover:from-teal-300 hover:to-blue-300 transition"
+            >
               Add to Wishlist
             </button>
             <Link

@@ -10,8 +10,7 @@ const DashNav = () => {
 
   const links = {
     buyer: [
-      { name: "Dashboard Home", path: "/dashboard/home" },
-      { name: "Wishlist", path: "/dashboard/wishlist" },
+      { name: "Wishlist", path: "/dashboard/home" },
       { name: "Cartlist", path: "/dashboard/cartlist" },
       { name: "Home", path: "/" },
     ],

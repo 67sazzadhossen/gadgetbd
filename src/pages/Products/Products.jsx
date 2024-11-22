@@ -104,10 +104,11 @@ const Products = () => {
           onChange={handleSortChange}
           className="select select-bordered w-full md:w-1/5"
         >
-          <option value="-">Sort By</option>
+          <option disabled value="-">
+            Sort By
+          </option>
           <option value="price-asc">Price: Low to High</option>
           <option value="price-desc">Price: High to Low</option>
-          <option value="createdAt-desc">Newest</option>
         </select>
       </div>
 
