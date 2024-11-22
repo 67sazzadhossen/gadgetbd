@@ -1,9 +1,22 @@
-# React + Vite
+# GadgetBD
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Live Link : https://gadgetbd-client.vercel.app/
+ 
 
-Currently, two official plugins are available:
+# Buyer Credential
+Email : phero@gmail.com
+Password : P@hero331
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-# gadgetbd
+# Seller Credential
+Email : phero.seller@gmail.com
+Password : P@hero331
+
+# Admin Credential
+Email : phero@gmail.com
+Password : P@hero331
+
+
+# Github Link 
+Client github link : https://github.com/67sazzadhossen/gadgetbd_client
+
+Server github link : https://github.com/67sazzadhossen/gadgetbd-server
