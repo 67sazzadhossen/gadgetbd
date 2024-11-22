@@ -27,7 +27,7 @@ const Table = ({ products, refetch, wishlist, cartlist }) => {
         const res = await axiosSecure.delete(
           `/delete-product/${id}?email=${user?.email}`
         );
-        console.log(res.status);
+        // console.log(res.status);
         if (res.status === 200) {
           Swal.fire({
             title: "Deleted!",
@@ -45,7 +45,7 @@ const Table = ({ products, refetch, wishlist, cartlist }) => {
       const resp = await axiosSecure.put(
         `/wishlist/remove?id=${id}&email=${user?.email}`
       ); // Fixed double `&`
-      console.log(resp.data);
+      // console.log(resp.data);
 
       if (resp.data.success) {
         Swal.fire({
@@ -82,7 +82,7 @@ const Table = ({ products, refetch, wishlist, cartlist }) => {
       const resp = await axiosSecure.put(
         `/cartlist/remove?id=${id}&email=${user?.email}`
       ); // Fixed double `&`
-      console.log(resp.data);
+      // console.log(resp.data);
 
       if (resp.data.success) {
         Swal.fire({

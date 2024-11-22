@@ -2,16 +2,17 @@ import { useParams } from "react-router";
 import useLoadSingleProduct from "../../../hooks/useLoadSingleProduct";
 import useAddToWishlist from "../../../hooks/useAddToWishlist";
 import useAddToCart from "../../../hooks/useAddToCart";
+import LoadingPage from "../../../components/Shared/LoadingPage";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const { singleProduct: product, isLoading } = useLoadSingleProduct(id);
-  console.log(id);
+  // console.log(id);
   const addToWishlist = useAddToWishlist();
   const addToCart = useAddToCart();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingPage />;
   }
 
   return (

@@ -4,6 +4,7 @@ import useLoadUser from "./useLoadUser";
 
 const useMyProducts = () => {
   const { user, isLoading } = useLoadUser();
+  // console.log(user?.email);
   const axiosSecure = useAxiosSecure();
   const {
     data,
@@ -13,7 +14,8 @@ const useMyProducts = () => {
     queryKey: [user?.email],
     enabled: !isLoading,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/my-products?email=${user.email}`);
+      const res = await axiosSecure.get(`/my-products?email=${user?.email}`);
+      // console.log(res);
       return res.data;
     },
   });

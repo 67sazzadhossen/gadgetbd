@@ -4,6 +4,7 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import Card from "../Shared/Card";
 import { Link } from "react-router-dom";
+import LoadingPage from "../Shared/LoadingPage";
 
 const FeaturedProducts = () => {
   const axiosPublic = useAxiosPublic();
@@ -19,7 +20,7 @@ const FeaturedProducts = () => {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>; // Show a loading state while fetching data
+    return <LoadingPage></LoadingPage>; // Show a loading state while fetching data
   }
 
   return (

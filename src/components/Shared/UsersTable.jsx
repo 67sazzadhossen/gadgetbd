@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import useLoadUser from "../../hooks/useLoadUser";
 
 const UsersTable = ({ users, refetch }) => {
+  const { user } = useLoadUser();
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedRole, setSelectedRole] = useState("");
   const axiosSecure = useAxiosSecure();
@@ -25,9 +26,9 @@ const UsersTable = ({ users, refetch }) => {
     if (loggedUser.role === "admin") {
       if (selectedUser && selectedRole) {
         closeModal();
-        console.log(selectedRole, id);
+        // console.log(selectedRole, id);
         const resp = await axiosSecure.put(
-          `/user/update-role?id=${id}&role=${selectedRole}?&email=${loggedUser?.email}`
+          `/user/update-role?id=${id}&role=${selectedRole}&email=${loggedUser?.email}`
         );
         if (resp.status === 200) {
           Swal.fire({
@@ -54,8 +55,10 @@ const UsersTable = ({ users, refetch }) => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        console.log(id);
-        const resp = await axiosSecure.delete(`/user/delete?id=${id}`);
+        // console.log(id);
+        const resp = await axiosSecure.delete(
+          `/user/delete?id=${id}&email=${user?.email}`
+        );
         // console.log(resp);
         if (resp.status === 200) {
           Swal.fire({

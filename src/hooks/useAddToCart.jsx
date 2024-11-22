@@ -6,13 +6,13 @@ const useAddToCart = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useLoadUser();
   const addToCart = async (id, removeFromWishlist) => {
-    console.log(id, removeFromWishlist);
+    // console.log(id, removeFromWishlist);
 
     try {
       const resp = await axiosSecure.put(
         `/cartlist/add?id=${id}&email=${user?.email}`
       );
-      console.log(resp.data);
+      // console.log(resp.data);
       if (resp.data.success) {
         Swal.fire({
           position: "center",
@@ -26,7 +26,7 @@ const useAddToCart = () => {
         }
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       Swal.fire({
         position: "center",
         icon: "warning",

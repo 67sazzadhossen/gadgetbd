@@ -1,3 +1,4 @@
+import LoadingPage from "../../components/Shared/LoadingPage";
 import Table from "../../components/Shared/Table";
 import useLoadUser from "../../hooks/useLoadUser";
 import useMyProducts from "../../hooks/useMyProducts";
@@ -8,7 +9,7 @@ const MyProducts = () => {
   const { myProducts, productLoading, refetch } = useMyProducts();
 
   if (isLoading || productLoading) {
-    return <div>Loading....</div>;
+    return <LoadingPage />;
   }
   return (
     <div className="py-8">

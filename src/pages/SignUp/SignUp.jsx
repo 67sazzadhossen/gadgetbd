@@ -1,6 +1,5 @@
 import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
-import { FcGoogle } from "react-icons/fc";
 import { IoText } from "react-icons/io5";
 import { LuUser2 } from "react-icons/lu";
 import { PiUsersThreeLight } from "react-icons/pi";
@@ -11,9 +10,10 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import ButtonLoading from "../../components/Shared/ButtonLoading";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import SocialLogin from "../../components/Shared/SocialLogin";
 
 const SignUp = () => {
-  const { SignUp, UpdateProfile, loading, setLoading, GoogleLogin } =
+  const { SignUp, UpdateProfile, loading, setLoading } =
     useContext(AuthContext);
   const imageHostingKey = import.meta.env.VITE_IMAGE_API_KEY;
   const image_hosting_url = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
@@ -22,30 +22,6 @@ const SignUp = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  const handleGoogleLogin = () => {
-    GoogleLogin()
-      .then(async (res) => {
-        if (res.user) {
-          const userData = {
-            name: res.user.displayName,
-            email: res.user.email,
-            image: res.user.photoURL,
-            role: "buyer",
-            wishList: [],
-            cartList: [],
-          };
-
-          const data = await axiosSecure.post("/users", userData);
-          console.log(data.data);
-          setLoading(false);
-          navigate("/");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   const {
     register,
@@ -85,17 +61,17 @@ const SignUp = () => {
                   timer: 1500,
                 });
                 const res = await axiosSecure.post("/users", userData);
-                console.log(res.data);
+                // console.log(res.data);
                 setLoading(false);
                 navigate("/");
               })
               .catch((err) => {
-                console.log(err);
+                // console.log(err);
                 setLoading(false);
               });
           }
         }
-        console.log(res);
+        // console.log(res);
       })
       .catch(() => {
         Swal.fire({
@@ -272,13 +248,7 @@ const SignUp = () => {
 
             <div className="divider">OR</div>
 
-            <button
-              onClick={handleGoogleLogin}
-              className="flex gap-1 items-center btn w-full"
-            >
-              <FcGoogle />
-              Google
-            </button>
+            <SocialLogin />
           </div>
         </div>
       </div>

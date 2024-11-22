@@ -1,6 +1,5 @@
 import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
-import { FcGoogle } from "react-icons/fc";
 import { LuUser2 } from "react-icons/lu";
 import { MdOutlineMail } from "react-icons/md";
 import { PiUsersThreeLight } from "react-icons/pi";
@@ -9,9 +8,10 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
 import Swal from "sweetalert2";
 import ButtonLoading from "../../components/Shared/ButtonLoading";
+import SocialLogin from "../../components/Shared/SocialLogin";
 
 const Login = () => {
-  const { Login, loading, setLoading, GoogleLogin } = useContext(AuthContext);
+  const { Login, loading, setLoading } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -23,21 +23,8 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const handleGoogleLogin = () => {
-    GoogleLogin()
-      .then(async (res) => {
-        if (res.user) {
-          setLoading(false);
-          navigate(from, { replace: true });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
 
     Login(data.email, data.password)
       .then((res) => {
@@ -169,14 +156,7 @@ const Login = () => {
           </div>
 
           <div className="divider">OR</div>
-
-          <button
-            onClick={handleGoogleLogin}
-            className="flex gap-1 items-center btn w-full"
-          >
-            <FcGoogle />
-            Google
-          </button>
+          <SocialLogin />
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useForm } from "react-hook-form";
 import { IoMdSearch } from "react-icons/io";
 import Card from "../../components/Shared/Card";
+import LoadingPage from "../../components/Shared/LoadingPage";
 
 const Products = () => {
   const axiosPublic = useAxiosPublic();
@@ -17,6 +18,7 @@ const Products = () => {
   const [sortOrder, setSortOrder] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 9;
+  // console.log(currentPage);
 
   // Fetch products data with query parameters
   const { data, isLoading, error } = useQuery({
@@ -72,10 +74,11 @@ const Products = () => {
   };
 
   // Loading and error states
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingPage />;
   if (error) return <div>Error loading products: {error.message}</div>;
 
   const { products, stats } = data;
+  // console.log(products);
 
   return (
     <div className="container mx-auto px-4">

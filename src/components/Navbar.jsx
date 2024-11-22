@@ -117,21 +117,29 @@ const Navbar = () => {
           ) : (
             <>
               <Link to={"/login"}>
-                <button className="btn bg-blue-950 text-white">Login</button>
+                <button className="btn btn-xs lg:btn-md bg-blue-950 text-white">
+                  Login
+                </button>
               </Link>
               <Link to={"/sign-up"}>
-                <button className="btn bg-black text-white">Sign Up</button>
+                <button className="btn btn-xs lg:btn-md bg-black text-white">
+                  Sign Up
+                </button>
               </Link>
             </>
           )}
-          <div className="ml-2">
-            <Link to={"/dashboard/wishlist"}>
-              <button className="btn bg-transparent border-none">
-                <IoCartSharp size={36} />
-                <div className="badge">{products?.length || 0} </div>
-              </button>
-            </Link>
-          </div>
+          {currentUser && (
+            <div className="ml-2">
+              <Link to={"/dashboard/wishlist"}>
+                <button className="btn btn-xs bg-transparent border-none">
+                  <div className="lg:text-3xl  text-lg">
+                    <IoCartSharp />
+                  </div>
+                  <div className="badge">{products?.length || 0} </div>
+                </button>
+              </Link>
+            </div>
+          )}
         </div>
       )}
     </div>
