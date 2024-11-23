@@ -108,8 +108,8 @@ const Products = () => {
           <option disabled value="-">
             Sort By
           </option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
+          <option value="price-desc">Price: Low to High</option>
+          <option value="price-asc">Price: High to Low</option>
         </select>
       </div>
 
