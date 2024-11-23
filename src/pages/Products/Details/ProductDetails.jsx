@@ -3,10 +3,12 @@ import useLoadSingleProduct from "../../../hooks/useLoadSingleProduct";
 import useAddToWishlist from "../../../hooks/useAddToWishlist";
 import useAddToCart from "../../../hooks/useAddToCart";
 import LoadingPage from "../../../components/Shared/LoadingPage";
+import useLoadUser from "../../../hooks/useLoadUser";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const { singleProduct: product, isLoading } = useLoadSingleProduct(id);
+  const { user } = useLoadUser();
   // console.log(id);
   const addToWishlist = useAddToWishlist();
   const addToCart = useAddToCart();
@@ -50,20 +52,24 @@ const ProductDetails = () => {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-wrap gap-4">
-            <button
-              onClick={() => addToCart(product._id)}
-              className="w-full sm:w-auto bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-md shadow-md hover:bg-blue-700 transition"
-            >
-              Add to Cart
-            </button>
-            <button
-              onClick={() => addToWishlist(product._id)}
-              className="w-full sm:w-auto bg-purple-600 text-white text-sm font-medium py-2 px-4 rounded-md shadow-md hover:bg-purple-700 transition"
-            >
-              Add to Wishlist
-            </button>
-          </div>
+          {user?.role === "seller" || user?.role === "admin" ? (
+            <></>
+          ) : (
+            <div className="flex flex-wrap gap-4">
+              <button
+                onClick={() => addToCart(product._id)}
+                className="w-full sm:w-auto bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-md shadow-md hover:bg-blue-700 transition"
+              >
+                Add to Cart
+              </button>
+              <button
+                onClick={() => addToWishlist(product._id)}
+                className="w-full sm:w-auto bg-purple-600 text-white text-sm font-medium py-2 px-4 rounded-md shadow-md hover:bg-purple-700 transition"
+              >
+                Add to Wishlist
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

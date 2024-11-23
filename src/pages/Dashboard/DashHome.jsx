@@ -65,13 +65,13 @@ const UserProfile = () => {
               <div className="mt-4 space-x-4">
                 <Link
                   to="/dashboard/add-product"
-                  className="bg-teal-500 text-white text-lg px-6 py-3 rounded-lg shadow-lg hover:bg-teal-600"
+                  className="bg-teal-500 text-white btn btn-sm"
                 >
                   Add New Product
                 </Link>
                 <Link
                   to="/dashboard/my-products"
-                  className="bg-gray-500 text-white text-lg px-6 py-3 rounded-lg shadow-lg hover:bg-gray-600"
+                  className="bg-gray-500 text-white btn btn-sm"
                 >
                   View My Products
                 </Link>
@@ -91,13 +91,13 @@ const UserProfile = () => {
               <div className="mt-4 space-x-4">
                 <Link
                   to="/dashboard/manage-users"
-                  className="bg-blue-500 text-white text-lg px-6 py-3 rounded-lg shadow-lg hover:bg-blue-600"
+                  className="bg-blue-500 text-white btn btn-sm"
                 >
                   Manage Users
                 </Link>
                 <Link
                   to="/dashboard/settings"
-                  className="bg-red-500 text-white text-lg px-6 py-3 rounded-lg shadow-lg hover:bg-red-600"
+                  className="bg-red-500 text-white btn btn-sm"
                 >
                   Platform Settings
                 </Link>

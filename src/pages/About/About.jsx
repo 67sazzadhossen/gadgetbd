@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const About = () => {
   return (
-    <div className="container mx-auto px-6 py-12 bg-gray-50">
+    <div className="container mx-auto px-6 py-12 ">
       {/* Header Section */}
       <div className="text-center mb-12">
         <h1 className="text-4xl font-extrabold text-gray-900">
@@ -35,7 +35,7 @@ const About = () => {
           At GadgetBD, we offer a variety of high-quality gadgets and tech
           products, including:
         </p>
-        <ul className="mt-6 list-disc pl-8 space-y-2 text-lg text-gray-600 max-w-3xl mx-auto">
+        <ul className="mt-6  pl-8 space-y-2 text-lg text-gray-600 max-w-3xl mx-auto">
           <li>Smartphones and Accessories</li>
           <li>Tablets and Laptops</li>
           <li>Smart Watches and Fitness Trackers</li>
