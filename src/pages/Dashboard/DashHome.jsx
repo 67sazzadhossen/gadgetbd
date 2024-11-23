@@ -95,12 +95,6 @@ const UserProfile = () => {
                 >
                   Manage Users
                 </Link>
-                <Link
-                  to="/dashboard/settings"
-                  className="bg-red-500 text-white btn btn-sm"
-                >
-                  Platform Settings
-                </Link>
               </div>
             </div>
           )}
