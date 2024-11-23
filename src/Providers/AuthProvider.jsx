@@ -60,7 +60,7 @@ const AuthProvider = ({ children }) => {
           .post("https://gadgetbd-server.vercel.app/jwt", loggedUser, {
             withCredentials: true,
           })
-          .then((res) => {
+          .then(() => {
             // console.log("token", res.data);
           });
       } else {
