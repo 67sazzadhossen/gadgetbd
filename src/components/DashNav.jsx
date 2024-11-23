@@ -31,15 +31,15 @@ const DashNav = () => {
   const navLinks = links[userRole] || [];
 
   return (
-    <div className="bg-base-300 min-h-screen py-8 relative ">
+    <div className="bg-base-300 lg:min-h-screen py-8 relative ">
       <h1 className="text-center text-2xl font-bold">GadgetBD</h1>
-      <ul className="flex flex-col gap-2 text-center my-16 px-6">
+      <ul className="flex lg:flex-col gap-2 text-center my-16 px-6">
         {navLinks.map((link, idx) => (
           <NavLink
             key={idx}
             to={link.path}
             className={({ isActive }) =>
-              `text-lg font-medium rounded-2xl py-2 ${
+              `lg:text-lg font-medium rounded-2xl py-2 px-4 lg:px-0 ${
                 isActive ? "bg-blue-500 text-white" : "bg-base-200"
               }`
             }
