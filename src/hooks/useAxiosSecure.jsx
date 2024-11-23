@@ -13,24 +13,24 @@ const axiosSecure = axios.create({
 // });
 
 const useAxiosSecure = () => {
-  // const { Logout } = useContext(AuthContext);
-  // const navigate = useNavigate();
-  // useEffect(() => {
-  //   axiosSecure.interceptors.response.use(
-  //     (res) => {
-  //       return res;
-  //     },
-  //     (error) => {
-  //       // console.log(error);
-  //       // console.log('error tracked in the interceptor', error.response)
-  //       if (error.response.status === 401 || error.response.status === 403) {
-  //         Logout().then(() => {
-  //           navigate("/login");
-  //         });
-  //       }
-  //     }
-  //   );
-  // }, [Logout, navigate]);
+  const { Logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+  useEffect(() => {
+    axiosSecure.interceptors.response.use(
+      (res) => {
+        return res;
+      },
+      (error) => {
+        console.log(error);
+        // console.log('error tracked in the interceptor', error.response)
+        if (error.response.status === 401 || error.response.status === 403) {
+          Logout().then(() => {
+            navigate("/login");
+          });
+        }
+      }
+    );
+  }, [Logout, navigate]);
   return axiosSecure;
 };
 
