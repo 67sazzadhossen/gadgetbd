@@ -61,7 +61,7 @@ const AuthProvider = ({ children }) => {
             withCredentials: true,
           })
           .then((res) => {
-            console.log("token", res.data);
+            // console.log("token", res.data);
           });
       } else {
         axios
