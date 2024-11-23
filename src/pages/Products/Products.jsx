@@ -14,11 +14,10 @@ const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState(null);
   const [search, setSearch] = useState("");
-  const [sortField, setSortField] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortField, setSortField] = useState("price"); // Default sorting by price
+  const [sortOrder, setSortOrder] = useState("asc"); // Default sorting order: ascending
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 9;
-  // console.log(currentPage);
 
   // Fetch products data with query parameters
   const { data, isLoading, error } = useQuery({
@@ -60,7 +59,7 @@ const Products = () => {
     setSelectedCategory(null);
     setSelectedBrand(null);
     setSearch("");
-    setSortField("");
+    setSortField("price");
     setSortOrder("asc");
     setCurrentPage(1);
   };
@@ -78,7 +77,6 @@ const Products = () => {
   if (error) return <div>Error loading products: {error.message}</div>;
 
   const { products, stats } = data;
-  // console.log(products);
 
   return (
     <div className="container mx-auto px-4">
@@ -87,7 +85,7 @@ const Products = () => {
         {/* Search Form */}
         <form
           onSubmit={handleSubmit(handleSearchSubmit)}
-          className="w-full md:w-1/3 mb-4 md:mb-0 border border-gray-400 flex rounded-xl items-center "
+          className="w-full md:w-1/3 mb-4 md:mb-0 border border-gray-400 flex rounded-xl items-center"
         >
           <input
             {...register("search")}
@@ -169,23 +167,6 @@ const Products = () => {
           {products?.length ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {products.map((product, idx) => (
-                // <div
-                //   key={product._id}
-                //   className="bg-white shadow-md rounded-lg p-4 hover:shadow-lg transition duration-200"
-                // >
-                //   <img
-                //     src={product.image}
-                //     alt={product.name}
-                //     className="h-40 w-full object-cover rounded-lg mb-4"
-                //   />
-                //   <h4 className="font-medium text-lg mb-2">{product.name}</h4>
-                //   <p className="text-sm text-gray-500">
-                //     {product.brand} | {product.category}
-                //   </p>
-                //   <p className="font-bold text-blue-600 mt-2">
-                //     ${product.price}
-                //   </p>
-                // </div>
                 <Card key={idx} product={product}></Card>
               ))}
             </div>
